@@ -3,7 +3,6 @@
 namespace Blog\Controller;
 
 use Blog\Form\PostForm;
-use Blog\Model\Post;
 use Blog\Model\PostCommandInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
