@@ -12,5 +12,10 @@
  */
 
 return [
-    // ...
+    'db' => [
+        'driver' => 'Pdo',
+        'dsn' => 'mysql:host=192.168.12.9;dbname=zf',
+        'username' => 'zf',
+        'password' => 'zf'
+    ],
 ];
