@@ -45,8 +45,7 @@ class WriteController extends AbstractActionController
             return $viewModel;
         }
 
-        $data = $this->form->getData()['post'];
-        $post = new Post($data['title'], $data['text']);
+        $post = $this->form->getData();
 
         try {
             $post = $this->command->insertPost($post);
