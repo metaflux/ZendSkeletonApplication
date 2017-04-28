@@ -53,12 +53,15 @@ class ZendDbSqlRepository implements PostRepositoryInterface
      *
      * Each entry should be a Post instance.
      *
+     * @param bool $paginated
+     * @param int $page
      * @return Post[]
      */
-    public function findAllPosts()
+    public function findAllPosts($paginated = false, $page = 1)
     {
         $sql = new Sql($this->dbRead);
         $select = $sql->select('posts');
+
         $statement = $sql->prepareStatementForSqlObject($select);
         $result = $statement->execute();
 
@@ -66,9 +69,18 @@ class ZendDbSqlRepository implements PostRepositoryInterface
             return [];
         }
 
-        $resultSet = new HydratingResultSet($this->hydrator, $this->postPrototype);
-        $resultSet->initialize($result);
-        return $resultSet;
+        if ($paginated && $page) {
+            $resultSet = new HydratingResultSet($this->hydrator, $this->postPrototype);
+            $paginator = new \Zend\Paginator\Paginator(new \Zend\Paginator\Adapter\DbSelect($select, $this->dbRead, $resultSet));
+            $paginator->setItemCountPerPage(3);
+            $paginator->setCurrentPageNumber($page);
+        } else {
+            $paginator = null;
+            $resultSet = new HydratingResultSet($this->hydrator, $this->postPrototype);
+            $resultSet->initialize($result);
+        }
+
+        return ['posts' => $resultSet, 'paginator' => $paginator];
     }
 
     /**

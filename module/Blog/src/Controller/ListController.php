@@ -23,8 +23,24 @@ class ListController extends AbstractActionController
      */
     public function indexAction()
     {
+        $data = $this->postRepository->findAllPosts();
+
         return new ViewModel([
-            'posts' => $this->postRepository->findAllPosts(),
+            'posts' => $data['posts'],
+        ]);
+    }
+
+    /**
+     * @return ViewModel
+     */
+    public function listAction()
+    {
+        $page = $this->params()->fromRoute('page');
+        $data = $this->postRepository->findAllPosts(true, $page);
+
+        return new ViewModel([
+            'posts' => $data['posts'],
+            'paginator' => $data['paginator']
         ]);
     }
 

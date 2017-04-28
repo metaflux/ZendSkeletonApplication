@@ -37,21 +37,43 @@ return [
     // This lines opens the configuration for the RouteManager
     'router' => [
         'routes' => [
+            'paginator' => [
+                'type' => 'segment',
+                'options' => [
+                    'route' => '/list/[page/:page]',
+                    'defaults' => [
+                        'page' => 1,
+                    ],
+                ],
+            ],
             'blog' => [
                 'type' => Literal::class,
                 'options' => [
                     'route' => '/blog',
                     'defaults' => [
                         'controller' => Controller\ListController::class,
-                        'action' => 'index',
+                        'action' => 'index'
                     ],
                 ],
                 'may_terminate' => true,
                 'child_routes' => [
+                    'list' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/list/[page/:page]',
+                            'defaults' => [
+                                'action' => 'list',
+                                'page' => 1
+                            ],
+                            'constraints' => [
+                                'page' => '[1-9]\d*',
+                            ],
+                        ],
+                    ],
                     'detail' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route' => '/:id',
+                            'route' => '/detail/:id',
                             'defaults' => [
                                 'action' => 'detail',
                             ],
