@@ -1,4 +1,5 @@
 <?php
+
 namespace Blog;
 
 use Zend\Router\Http\Literal;
@@ -20,33 +21,37 @@ return [
             Model\ZendDbSqlRepository::class => Factory\ZendDbSqlRepositoryFactory::class,
             Model\ZendDbSqlCommand::class => Factory\ZendDbSqlCommandFactory::class,
 
-            Controller\WriteController::class => Factory\WriteControllerFactory::class,
+            'Zend\Db\Adapter\Adapter' => \Zend\Db\Adapter\AdapterServiceFactory::class,
         ],
+        'abstract_factories' => array(
+            \Zend\Db\Adapter\AdapterAbstractServiceFactory::class
+        ),
     ],
     'controllers' => [
         'factories' => [
             Controller\ListController::class => Factory\ListControllerFactory::class,
             Controller\WriteController::class => Factory\WriteControllerFactory::class,
+            Controller\DeleteController::class => Factory\DeleteControllerFactory::class,
         ],
     ],
     // This lines opens the configuration for the RouteManager
-    'router'          => [
+    'router' => [
         'routes' => [
             'blog' => [
                 'type' => Literal::class,
                 'options' => [
-                    'route'    => '/blog',
+                    'route' => '/blog',
                     'defaults' => [
                         'controller' => Controller\ListController::class,
-                        'action'     => 'index',
+                        'action' => 'index',
                     ],
                 ],
                 'may_terminate' => true,
-                'child_routes'  => [
+                'child_routes' => [
                     'detail' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route'    => '/:id',
+                            'route' => '/:id',
                             'defaults' => [
                                 'action' => 'detail',
                             ],
@@ -62,6 +67,32 @@ return [
                             'defaults' => [
                                 'controller' => Controller\WriteController::class,
                                 'action' => 'add',
+                            ],
+                        ],
+                    ],
+                    'edit' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/edit/:id',
+                            'defaults' => [
+                                'controller' => Controller\WriteController::class,
+                                'action' => 'edit',
+                            ],
+                            'constraints' => [
+                                'id' => '[1-9]\d*',
+                            ],
+                        ],
+                    ],
+                    'delete' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/delete/:id',
+                            'defaults' => [
+                                'controller' => Controller\DeleteController::class,
+                                'action' => 'delete',
+                            ],
+                            'constraints' => [
+                                'id' => '[1-9]\d*',
                             ],
                         ],
                     ],

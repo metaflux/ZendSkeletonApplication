@@ -29,17 +29,21 @@ class ZendDbSqlRepository implements PostRepositoryInterface
 
     /**
      * ZendDbSqlRepository constructor.
-     * @param AdapterInterface $db
+     * @param AdapterInterface $dbRead
+     * @param AdapterInterface $dbWrite
      * @param HydratorInterface $hydrator
      * @param Post $postPrototype
      */
     public function __construct(
-        AdapterInterface $db,
+        AdapterInterface $dbRead,
+        AdapterInterface $dbWrite,
         HydratorInterface $hydrator,
         Post $postPrototype
     )
     {
-        $this->db = $db;
+        $this->dbRead = $dbRead;
+        $this->dbWrite = $dbWrite;
+
         $this->hydrator = $hydrator;
         $this->postPrototype = $postPrototype;
     }
@@ -53,7 +57,7 @@ class ZendDbSqlRepository implements PostRepositoryInterface
      */
     public function findAllPosts()
     {
-        $sql = new Sql($this->db);
+        $sql = new Sql($this->dbRead);
         $select = $sql->select('posts');
         $statement = $sql->prepareStatementForSqlObject($select);
         $result = $statement->execute();
@@ -75,7 +79,7 @@ class ZendDbSqlRepository implements PostRepositoryInterface
      */
     public function findPost($id)
     {
-        $sql = new Sql($this->db);
+        $sql = new Sql($this->dbRead);
         $select = $sql->select('posts');
         $select->where(['id = ?' => $id]);
 

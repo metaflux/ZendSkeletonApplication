@@ -14,7 +14,8 @@ class ZendDbSqlRepositoryFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         return new ZendDbSqlRepository(
-            $container->get(AdapterInterface::class),
+            $container->get('dbRead'),
+            $container->get('dbWrite'),
             new ReflectionHydrator(),
             new Post('', '')
         );

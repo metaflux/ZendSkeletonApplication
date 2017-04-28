@@ -13,9 +13,25 @@
 
 return [
     'db' => [
-        'driver' => 'Pdo',
-        'dsn' => 'mysql:host=192.168.12.9;dbname=zf',
-        'username' => 'zf',
-        'password' => 'zf'
-    ],
+        // Used for zenddevelopertools
+//        'driver' => 'Pdo',
+//        'dsn' => 'mysql:host=192.168.12.9;dbname=zf;charset=utf8',
+//        'username' => 'zf',
+//        'password' => 'zf',
+
+        'adapters' => [
+            'dbRead' => [
+                'driver' => 'Pdo',
+                'dsn' => 'mysql:host=192.168.12.9;dbname=zf;charset=utf8',
+                'username' => 'zf',
+                'password' => 'zf',
+            ],
+            'dbWrite' => [
+                'driver' => 'Pdo',
+                'dsn' => 'mysql:host=192.168.12.9;dbname=zf;charset=utf8',
+                'username' => 'zf',
+                'password' => 'zf',
+            ],
+        ],
+    ]
 ];

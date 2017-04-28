@@ -22,7 +22,7 @@ return [
              * Expects: bool
              * Default: true
              */
-            'enabled' => true,
+            'enabled' => false,
 
             /**
              * Enables or disables the strict mode. If the strict mode is enabled, any error will throw an exception,
