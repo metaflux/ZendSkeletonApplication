@@ -5,7 +5,6 @@ namespace Blog\Factory;
 use Interop\Container\ContainerInterface;
 use Blog\Model\Post;
 use Blog\Model\ZendDbSqlRepository;
-use Zend\Db\Adapter\AdapterInterface;
 use Zend\Hydrator\Reflection as ReflectionHydrator;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
